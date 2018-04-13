@@ -21,6 +21,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) '
                          'Chrome/63.0.3239.84 Safari/537.36'}
 book_title = "第{}章"
 url_base = "http://www.zhonghuawuxia.com/chapter/{}"
+url_book = 'https://github.com/xiaominghe2014/spider_book/blob/master/book/天龙地珠(十二神拳)/{}.md'
 tag = "pre"
 start = 65853
 total = 10
@@ -39,7 +40,14 @@ def write_txt(txt, file):
         f.write(txt)
 
 
-def per_book_chat(url, save_title, txt_tag):
+def get_link(txt, url):
+    if '' == url:
+        return ''
+    url = url_book.format(url)
+    return '[{}]({})'.format(txt, url)
+
+
+def per_book_chat(url, save_title, txt_tag, pre_tag, next_tag):
     print(url, save_title, txt_tag)
     resp = session.get(url, headers=headers, stream=True, verify=False)
     try:
@@ -47,6 +55,7 @@ def per_book_chat(url, save_title, txt_tag):
         pattern = r'.*(<{0}>.*</{0}>).*'.format(tag)
         txt = re.match(pattern, text, re.S | re.X).group(1)
         book = '{}/{}.md'.format(book_path, save_title)
+        txt = '{}&nbsp;&nbsp;&nbsp;&nbsp;{}{}'.format(get_link('上一章', pre_tag), get_link('下一章', next_tag), txt)
         write_txt(txt, book)
     except Exception as e:
         print(e)
@@ -57,7 +66,13 @@ def main():
     for unit in range(total):
         url = url_base.format(unit+start)
         title = book_title.format(unit+1)
-        per_book_chat(url, title, tag)
+        pre_tag = ''
+        next_tag = ''
+        if unit > 1:
+            pre_tag = book_title.format(unit)
+        if unit < total-2:
+            next_tag = book_title.format(unit+2)
+        per_book_chat(url, title, tag, pre_tag, next_tag)
 
 
 if __name__ == '__main__':
