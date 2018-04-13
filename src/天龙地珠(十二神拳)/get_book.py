@@ -55,7 +55,8 @@ def per_book_chat(url, save_title, txt_tag, pre_tag, next_tag):
         pattern = r'.*(<{0}>.*</{0}>).*'.format(tag)
         txt = re.match(pattern, text, re.S | re.X).group(1)
         book = '{}/{}.md'.format(book_path, save_title)
-        txt = '{}&nbsp;&nbsp;&nbsp;&nbsp;{}{}'.format(get_link('上一章', pre_tag), get_link('下一章', next_tag), txt)
+        link = '{}&nbsp;&nbsp;&nbsp;&nbsp;{}'.format(get_link('上一章', pre_tag), get_link('下一章', next_tag))
+        txt = '{}{}{}'.format(link, txt, link)
         write_txt(txt, book)
     except Exception as e:
         print(e)
