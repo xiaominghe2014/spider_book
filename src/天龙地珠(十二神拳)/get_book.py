@@ -68,9 +68,9 @@ def main():
         title = book_title.format(unit+1)
         pre_tag = ''
         next_tag = ''
-        if unit > 1:
+        if unit > 0:
             pre_tag = book_title.format(unit)
-        if unit < total-2:
+        if unit < total-1:
             next_tag = book_title.format(unit+2)
         per_book_chat(url, title, tag, pre_tag, next_tag)
 
