@@ -19,13 +19,13 @@ import requests
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) '
                          'AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/63.0.3239.84 Safari/537.36'}
-book_title = "天龙地珠(十二神拳)-第{}章"
+book_title = "第{}章"
 url_base = "http://www.zhonghuawuxia.com/chapter/{}"
 tag = "pre"
 start = 65853
 total = 10
 current_dir = os.path.dirname(os.path.realpath(__file__))
-book_path = '{}/../../book/天龙地珠/'.format(current_dir)
+book_path = '{}/../../book/天龙地珠(十二神拳)/'.format(current_dir)
 session = requests.session()
 
 
