@@ -19,14 +19,19 @@ import requests
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) '
                          'AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/63.0.3239.84 Safari/537.36'}
+book_name = "天龙地珠(十二神拳)"
 book_title = "第{}章"
 url_base = "http://www.zhonghuawuxia.com/chapter/{}"
-url_book = 'https://github.com/xiaominghe2014/spider_book/blob/master/book/天龙地珠(十二神拳)/{}.md'
+url_book = 'https://github.com/xiaominghe2014/spider_book/blob/master/book/{}/{}.md'
+git_root = 'https://github.com/xiaominghe2014/spider_book/blob/master'
+git_book = 'https://github.com/xiaominghe2014/spider_book/blob/master/book/{}'.format(book_name)
 tag = "pre"
 start = 65853
 total = 10
 current_dir = os.path.dirname(os.path.realpath(__file__))
-book_path = '{}/../../book/天龙地珠(十二神拳)/'.format(current_dir)
+book_path = '{}/../../book/{}/'.format(current_dir, book_name)
+md_root = '{}/../../README.md'.format(current_dir)
+md_book = '{}/../../book/{}/README.md'.format(current_dir, book_name)
 session = requests.session()
 
 
@@ -43,7 +48,7 @@ def write_txt(txt, file):
 def get_link(txt, url):
     if '' == url:
         return ''
-    url = url_book.format(url)
+    url = url_book.format(book_name, url)
     return '[{}]({})'.format(txt, url)
 
 
@@ -62,6 +67,18 @@ def per_book_chat(url, save_title, txt_tag, pre_tag, next_tag):
         print(e)
 
 
+def add_md():
+    with open(md_root, mode='a+', encoding='utf-8') as md:
+        md.write('\n- [{}]({})'.format(book_name, url_book.format(book_name, 'README.md')))
+    with open(md_book, mode='a+', encoding='utf-8') as md:
+        txt = '#{}\n##章节列表\n'.format(book_name)
+        for unit in range(total):
+            title = book_title.format(unit + 1)
+            url = url_book.format(book_name, title)
+            txt = '\n{}- [{}]({})\n'.format(txt, title, url)
+        md.write(txt)
+
+
 def main():
     check_dir()
     for unit in range(total):
@@ -74,6 +91,7 @@ def main():
         if unit < total-1:
             next_tag = book_title.format(unit+2)
         per_book_chat(url, title, tag, pre_tag, next_tag)
+    add_md()
 
 
 if __name__ == '__main__':
