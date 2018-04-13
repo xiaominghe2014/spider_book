@@ -69,9 +69,9 @@ def per_book_chat(url, save_title, txt_tag, pre_tag, next_tag):
 
 def add_md():
     with open(md_root, mode='a+', encoding='utf-8') as md:
-        md.write('\n- [{}]({})'.format(book_name, url_book.format(book_name, 'README.md')))
+        md.write('\n- [{}]({})'.format(book_name, url_book.format(book_name, 'README')))
     with open(md_book, mode='a+', encoding='utf-8') as md:
-        txt = '#{}\n##章节列表\n'.format(book_name)
+        txt = '# {}\n## 章节列表\n'.format(book_name)
         for unit in range(total):
             title = book_title.format(unit + 1)
             url = url_book.format(book_name, title)
