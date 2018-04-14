@@ -9,21 +9,22 @@
 @site: 
 @software: PyCharm
 @file: get_book.py
-@time: 2018/4/13 下午4:08
+@time: 2018/4/14 下午7:10
 
 """
 import os
 import re
 import requests
+import gzip
 
-"""
-5 args
-"""
-url_base = "http://www.zhonghuawuxia.com/chapter/{}"
-book_name = "天龙地珠(十二神拳)"
-pattern = r'.*(<pre>.*</pre>).*'
-start = 65853
-total = 10
+# requests.packages.urllib3.disable_warnings()
+
+url_base = 'http://www.zhonghuawuxia.com/chapter/{}'
+book_name = "江湖三女侠"
+pattern = r'.*</div>(.*)<br><br>.*'
+start = 1295
+total = 48
+
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) '
                          'AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -61,10 +62,11 @@ def per_book_chat(url, save_title, pre_tag, next_tag):
     resp = session.get(url, headers=headers, stream=True, verify=False)
     try:
         text = resp.text
-        txt = re.match(pattern, text, re.S | re.X).group(1)
+        g = re.match(pattern, text, re.S | re.X)
+        txt = g.group(1)
         book = '{}/{}.md'.format(book_path, save_title)
-        link = '{}&nbsp;&nbsp;&nbsp;&nbsp;{}&nbsp;&nbsp;&nbsp;&nbsp;{}'\
-            .format(get_link('上一章', pre_tag), get_link('下一章', next_tag), get_link('返回目录', 'README'))
+        link = '\n{}&nbsp;&nbsp;&nbsp;&nbsp;{}&nbsp;&nbsp;&nbsp;&nbsp;{}\n'\
+               .format(get_link('上一章', pre_tag), get_link('下一章', next_tag), get_link('返回目录', 'README'))
         txt = '{}{}{}'.format(link, txt, link)
         write_txt(txt, book)
     except Exception as e:
