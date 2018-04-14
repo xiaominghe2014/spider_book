@@ -8,3 +8,5 @@
 - [奇正十三剑](https://github.com/xiaominghe2014/spider_book/blob/master/book/奇正十三剑/README.md)
 - [神龙剑女](https://github.com/xiaominghe2014/spider_book/blob/master/book/神龙剑女/README.md)
 - [生死剑](https://github.com/xiaominghe2014/spider_book/blob/master/book/生死剑/README.md)
+
+- [六道天书](https://github.com/xiaominghe2014/spider_book/blob/master/book/六道天书/README.md)
